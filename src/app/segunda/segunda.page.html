@@ -1,0 +1,32 @@
+<ion-header>
+  <ion-toolbar>
+
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Pregunta 1</ion-title>
+  </ion-toolbar>
+
+</ion-header>
+
+<ion-content>
+
+  <ion-item>
+    <ion-label stacked>Descripcion</ion-label>
+    <ion-input [(ngModel)] = "letterObj.from"></ion-input>
+  </ion-item>
+
+  <ion-item>
+    <ion-label stacked>Numero de serie</ion-label>
+    <ion-input [(ngModel)] = "letterObj.to"></ion-input>
+  </ion-item>
+
+  <!-- <ion-item>
+    <ion-label stacked>Text</ion-label>
+    <ion-input [(ngModel)] = "letterObj.text" rows="10"></ion-input>
+  </ion-item> -->
+
+  <ion-button full (click)="createPdf()">Create PDF</ion-button>
+  <ion-button full (click)="downloadPdf()" color="secondary" [disabled]="!pdfObj">Download PDF</ion-button>
+
+</ion-content>

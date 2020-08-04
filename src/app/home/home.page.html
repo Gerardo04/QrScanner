@@ -1,20 +1,99 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
     <ion-title>
-      Blank
+      Inicio
     </ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Blank</ion-title>
-    </ion-toolbar>
-  </ion-header>
+<ion-content [fullscreen]="true" class="ion-padding">
 
-  <div id="container">
-    <strong>Ready to create an app?</strong>
-    <p>Start with Ionic <a target="_blank" rel="noopener noreferrer" href="https://ionicframework.com/docs/components">UI Components</a></p>
-  </div>
+  <ion-card class="welcome-card">
+    <img src="/assets/images/logo.png" alt="">
+    <ion-card-header>
+      <ion-card-subtitle>Centro de ayuda</ion-card-subtitle>
+      <ion-card-title>Escaner de codigos Qr</ion-card-title>
+    </ion-card-header>
+
+    <ion-card-content>
+      <p>Aqui se podran escanear codigos Qr que se encuentran en el multifuncional</p>
+    </ion-card-content>
+    
+    <ion-button expand="block" margin (click)="scanCode()">Comenzar escaneo</ion-button>
+
+    <div *ngIf="scannedData">
+      <p>
+        Codigo Escaneado : <b>{{ letterObj.scannedData["text"] }}</b>
+      </p>
+      <p>
+        Tipo : <b>{{ scannedData["format"] }}</b>
+      </p>
+    </div>
+  </ion-card>
+
+  <br>
+
+  <br>
+
+  <ion-item>
+    <ion-label stacked>Descripcion del problema</ion-label>
+    <ion-input [(ngModel)] = "letterObj.from"></ion-input>
+  </ion-item>
+
+  <br>
+
+  <ion-item>
+    <ion-label stacked>Nombre:</ion-label>
+    <ion-input [(ngModel)] = "letterObj.nombre"></ion-input>
+  </ion-item>
+
+  <ion-item>
+    <ion-label stacked>Correo electronico:</ion-label>
+    <ion-input  type="email" [(ngModel)] = "letterObj.email"></ion-input>
+  </ion-item>
+
+  <ion-item>
+    <ion-label stacked>Tlefono de contacto:</ion-label>
+    <ion-input type="number" [(ngModel)] = "letterObj.telefono"></ion-input>
+  </ion-item>
+
+  <ion-item>
+    <ion-label stacked>Hora de atencion:</ion-label>
+    <ion-input [(ngModel)] = "letterObj.hora_atencion"></ion-input>
+  </ion-item>
+
+  <ion-item *ngIf="scannedData">
+    <ion-label stacked>Numero de serie:</ion-label>
+    <ion-input [(ngModel)] = "letterObj.scannedData"></ion-input>
+  </ion-item>
+
+  <!-- El boton aparce siempre y cuando la variable dataImage contenga una foto -->
+  <ion-button  *ngIf="dataImage" full (click)="createPdf()" [disabled]="!letterObj.hora_atencion">Crear Reporte</ion-button>
+
+  <!-- El boton se sigue mostrando aun y cuando el usuario decida no enviar una foto -->
+  <ion-button  *ngIf="!dataImage" full (click)="createPdfSinImagen()" [disabled]="!letterObj.hora_atencion" >Crear Reporte</ion-button>
+
+  <ion-button full (click)="downloadPdf()" color="secondary" [disabled]="!pdfObj">Enviar Reporte</ion-button>
+
+  <br>
+
+  <br>
+
+<img *ngFor = "let photo of photos" [src]="letterObj.photo">
+
+<ion-fab vertical="bottom" horizontal="center" slot="fixed">
+  <ion-fab-button (click)="takePicture()">
+    <ion-icon name="camera"></ion-icon>
+  </ion-fab-button>
+</ion-fab>
+
+<ion-button full (click)="sendEmail()">Enviar corre</ion-button>
+
+<ion-card>
+
+  <ion-card-content>
+    <img [src]="dataImage" *ngIf="dataImage">
+  </ion-card-content>
+</ion-card>
+
 </ion-content>
