@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { BarcodeScannerOptions, BarcodeScanner } from '@ionic-native/barcode-scanner/ngx';
 import { NavController, Platform } from '@ionic/angular';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { LoadingController } from '@ionic/angular';
 
 import pdfMake from 'pdfmake/build/pdfmake';
 import pdfFonts from 'pdfmake/build/vfs_fonts';
@@ -35,9 +36,10 @@ export class HomePage {
     from: '',
     scannedData: {},
     nombre: '',
-    email: '',
+    // email: '',
     telefono: '',
-    hora_atencion: '',
+    hora_atencion1: '',
+    hora_atencion2: ''
     // imagenesPDF: [this.photos]
   }
 
@@ -59,6 +61,7 @@ export class HomePage {
      private file: File,
      private sainitizer: DomSanitizer,
      private fileOpener: FileOpener,
+     private loadingController: LoadingController,
      private emailComposer: EmailComposer) {
 
     this.encodeData = "https://www.FreakyJolly.com";
@@ -134,14 +137,17 @@ createPdf(){
        { text: 'Nombre', style: 'subheader', fontSize: 20, },
        { text: this.letterObj.nombre, fontSize: 15, },
 
-       { text: 'Correo electronico', style: 'subheader', fontSize: 20 },
-       { text: this.letterObj.email, fontSize: 15 },
+      //  { text: 'Correo electronico', style: 'subheader', fontSize: 20 },
+      //  { text: this.letterObj.email, fontSize: 15 },
 
        { text: 'Telefono de contacto', style: 'subheader', fontSize: 20 },
        { text: this.letterObj.telefono, fontSize: 15 },
 
        { text: 'Hora de atencion', style: 'subheader', fontSize: 20 },
-       { text: this.letterObj.hora_atencion, fontSize: 15 },
+       { text: this.letterObj.hora_atencion1, fontSize: 15 },
+
+       { text: 'Hasta las:', style: 'subheader', fontSize: 20 },
+       { text: this.letterObj.hora_atencion2, fontSize: 15 },
 
        {text: '\n\nImagen Representativa'},
        {image: this.photos, width: 150, height: 150},
@@ -174,8 +180,10 @@ createPdf(){
     }
   }
   this.pdfObj = pdfMake.createPdf(docDefinition);
+  this.presentLoading();
 }
 
+//Se genera el pdf sin la nesecidad de tomar una ftografia-----------------------------------------------------------------------------------
 
 createPdfSinImagen(){
   var docDefinition = {
@@ -192,14 +200,17 @@ createPdfSinImagen(){
        { text: 'Nombre', style: 'subheader', fontSize: 20, },
        { text: this.letterObj.nombre, fontSize: 15, },
 
-       { text: 'Correo electronico', style: 'subheader', fontSize: 20 },
-       { text: this.letterObj.email, fontSize: 15 },
+      //  { text: 'Correo electronico', style: 'subheader', fontSize: 20 },
+      //  { text: this.letterObj.email, fontSize: 15 },
 
        { text: 'Telefono de contacto', style: 'subheader', fontSize: 20 },
        { text: this.letterObj.telefono, fontSize: 15 },
 
        { text: 'Hora de atencion', style: 'subheader', fontSize: 20 },
-       { text: this.letterObj.hora_atencion, fontSize: 15 },
+       { text: this.letterObj.hora_atencion1, fontSize: 15 },
+
+       { text: 'Hasta las:', style: 'subheader', fontSize: 20 },
+       { text: this.letterObj.hora_atencion2, fontSize: 15 },
 
        {text: 'Informacion para contactar a soporte\n\n', style: 'subheader' , fontSize: 20 },
 
@@ -229,8 +240,20 @@ createPdfSinImagen(){
     }
   }
   this.pdfObj = pdfMake.createPdf(docDefinition);
+  this.presentLoading();
 }
 
+//Pantalla de carga para generar el PDF-----------------------------------------------------------------------------------
+
+async presentLoading(){
+  const loading = await this.loadingController.create({
+    message: 'Creando reporte',
+    duration: 1500
+  });
+  return await loading.present();
+}
+
+//Descargar el PDF-----------------------------------------------------------------------------------
 
 downloadPdf() {
   if (this.plt.is('cordova')){
@@ -239,10 +262,23 @@ downloadPdf() {
 
       //Guardar el pdf en el directorio de la aplicacion
 
-      this.file.writeFile(this.file.dataDirectory, 'ReporteSDTA.pdf', blob, {replace: true}).then(fileEntry => {
-        this.fileOpener.open(this.file.dataDirectory + 'ReporteSDTA.pdf', 'application/pdf');
-      })
+      this.file.writeFile(this.file.externalApplicationStorageDirectory, 'ReporteSDTA.pdf', blob, {replace: true})
+
+        let email = {
+          to: 'a.soporte@kyocerasdta.com.mx',
+          attachments: [
+            this.file.externalApplicationStorageDirectory + 'ReporteSDTA.pdf'
+          ],
+          subject: 'Reporte de fallas',
+          body: '',
+          isHtml: true
+        };
+     
+        this.emailComposer.open(email);
+        console.log(email.body, "Si jala pues ");
+      
     });
+
   } else {
     this.pdfObj.download();
     console.log(this.pdfObj);
@@ -266,6 +302,8 @@ downloadPdf() {
   //   });
   // }
 
+  //Habilitar la camara para tomar o seleccionar una fotografia-----------------------------------------------------------------------------------
+
   async takePicture(){
     const image = await Plugins.Camera.getPhoto({
       quality: 100,
@@ -278,21 +316,21 @@ downloadPdf() {
     this.dataImage = this.photos;
   }
 
-  sendEmail(){
-    let email = {
-      to: 'gerita.arell@gmail.com',
-      attachments: [
-        'file://ReporteSDTA.pdf'
-      ],
-      subject: 'Reporte de fallas',
-      body: this.letterObj.nombre,
-      body2: this.letterObj.email,
-      isHtml: true
-    };
+  // sendEmail(){
+  //   let email = {
+  //     to: 'gerita.arell@gmail.com',
+  //     attachments: [
+  //       'file://ReporteSDTA.pdf'
+  //     ],
+  //     subject: 'Reporte de fallas',
+  //     body: this.letterObj.nombre,
+  //     body2: this.letterObj.email,
+  //     isHtml: true
+  //   };
  
-    this.emailComposer.open(email);
-    console.log(email.body,email.body2, "Si jala pues ");
-  }
+  //   this.emailComposer.open(email);
+  //   console.log(email.body,email.body2, "Si jala pues ");
+  // }
 
   //Prueba de segunda rama para github
 
