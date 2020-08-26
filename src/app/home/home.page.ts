@@ -43,6 +43,7 @@ export class HomePage {
     // imagenesPDF: [this.photos]
   }
 
+
   pdfObj = null;
 
   dataImage = null;
@@ -54,15 +55,16 @@ export class HomePage {
   myForm: FormGroup;
 
   constructor(
+
     private barcodeScanner: BarcodeScanner,
-     public navCtrl: NavController,
-     public formBuilder: FormBuilder,
-     private plt: Platform,
-     private file: File,
-     private sainitizer: DomSanitizer,
-     private fileOpener: FileOpener,
-     private loadingController: LoadingController,
-     private emailComposer: EmailComposer) {
+    public navCtrl: NavController,
+    public formBuilder: FormBuilder,
+    private plt: Platform,
+    private file: File,
+    private sainitizer: DomSanitizer,
+    private fileOpener: FileOpener,
+    private loadingController: LoadingController,
+    private emailComposer: EmailComposer) {
 
     this.encodeData = "https://www.FreakyJolly.com";
     //Opciones
@@ -92,6 +94,10 @@ export class HomePage {
   } 
 
   // Navegar entre pantallas de la aplicacion--------------------------------------------------------
+
+  manchasPage(){
+    this.navCtrl.navigateForward('/manchas');
+  }
 
   abrirSegundaPag(){
     this.navCtrl.navigateForward('/segunda');

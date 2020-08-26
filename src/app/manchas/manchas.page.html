@@ -1,22 +1,24 @@
-<ion-header [translucent]="true">
+<ion-header>
   <ion-toolbar>
-    <ion-title>
-      Inicio
-    </ion-title>
+
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Manchas</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true" class="ion-padding">
 
   <ion-card class="welcome-card">
-    <img src="/assets/images/logo.png" alt="">
+    <img src="/assets/images/manchas.jpg" alt="">
     <ion-card-header>
-      <ion-card-subtitle>Centro de ayuda</ion-card-subtitle>
-      <ion-card-title>Escaner de codigos Qr</ion-card-title>
+      <ion-card-subtitle>Manchas en el papel</ion-card-subtitle>
+      <ion-card-title>Reporta este problema de la manera mas sencilla</ion-card-title>
     </ion-card-header>
 
     <ion-card-content>
-      <p>Aqui se podran escanear codigos Qr que se encuentran en el multifuncional</p>
+      <p>Recuerda que es indispensable tomar una fotografia de las manchas</p>
     </ion-card-content>
     
     <ion-button expand="block" margin (click)="scanCode()">Comenzar escaneo</ion-button>
@@ -29,37 +31,13 @@
         Tipo : <b>{{ scannedData["format"] }}</b>
       </p>
     </div>
+    
   </ion-card>
-
-  <br>
-
-  <br>
-
-  <ion-button color="dark" expand="block" (click)="manchasPage()" >La impresora está manchando</ion-button>
-
-
-  <br>
-
-  <ion-item>
-    <ion-label position="floating">Describa la falla del equipo:</ion-label>
-    <ion-input></ion-input>
-    <ion-textarea  [(ngModel)]="letterObj.from" ></ion-textarea>
-  </ion-item>
-
-  <!-- <ion-item>
-    <ion-label position="floating" stacked>Descripcion de la falla:</ion-label>
-    <ion-input [(ngModel)] = "letterObj.from"></ion-input>
-  </ion-item> -->
 
   <ion-item>
     <ion-label position="floating" stacked>Nombre:</ion-label>
     <ion-input [(ngModel)] = "letterObj.nombre"></ion-input>
   </ion-item>
-
-  <!-- <ion-item>
-    <ion-label stacked>Correo electronico:</ion-label>
-    <ion-input  type="email" [(ngModel)] = "letterObj.email"></ion-input>
-  </ion-item> -->
 
   <ion-item>
     <ion-label position="floating" stacked>Telefono de contacto:</ion-label>
@@ -102,38 +80,25 @@
     </ion-select>
   </ion-item>
 
-  <ion-item *ngIf="scannedData">
-    <ion-label stacked>Numero de serie:</ion-label>
-    <ion-input [(ngModel)] = "letterObj.scannedData"></ion-input>
-  </ion-item>
 
-  <!-- El boton aparce siempre y cuando la variable dataImage contenga una foto -->
-  <ion-button  *ngIf="dataImage" full (click)="createPdf()" [disabled]="!letterObj.hora_atencion2">Crear Reporte</ion-button>
-
-  <!-- El boton se sigue mostrando aun y cuando el usuario decida no enviar una foto -->
-  <ion-button  *ngIf="!dataImage" full (click)="createPdfSinImagen()" [disabled]="!letterObj.hora_atencion2" >Crear Reporte</ion-button>
+  <ion-button *ngIf="dataImage" full (click)="createPdf()">Crear Reporte</ion-button>
 
   <ion-button full (click)="downloadPdf()" color="secondary" [disabled]="!pdfObj">Enviar Reporte</ion-button>
 
-  <br>
 
-  <br>
-
-<!-- <img *ngFor = "let photo of photos" [src]="letterObj.photo">
+  <!-- <img *ngFor = "let photo of photos" [src]="letterObj.photo"> -->
 
 <ion-fab vertical="bottom" horizontal="end" slot="fixed">
   <ion-fab-button (click)="takePicture()">
     <ion-icon name="camera"></ion-icon>
   </ion-fab-button>
-</ion-fab> -->
+</ion-fab>
 
-<!-- <ion-button full (click)="sendEmail()">Enviar corre</ion-button> -->
-
-<!-- <ion-card>
+<ion-card>
 
   <ion-card-content>
     <img [src]="dataImage" *ngIf="dataImage">
   </ion-card-content>
-</ion-card> -->
+</ion-card>
 
 </ion-content>
