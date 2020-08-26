@@ -1,0 +1,106 @@
+<ion-header>
+  <ion-toolbar>
+
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Manchas</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="ion-padding">
+
+  <ion-card class="welcome-card">
+    <img src="/assets/images/manchas.jpg" alt="">
+    <ion-card-header>
+      <ion-card-subtitle>Manchas en el papel</ion-card-subtitle>
+      <ion-card-title>Reporta este problema de la manera mas sencilla</ion-card-title>
+    </ion-card-header>
+
+    <ion-card-content>
+      <p>Recuerda que es indispensable tomar una fotografia de las manchas</p>
+    </ion-card-content>
+    
+    <ion-button expand="block" margin (click)="scanCode()">Comenzar escaneo</ion-button>
+
+    <div *ngIf="scannedData">
+      <p>
+        Codigo Escaneado : <b>{{ letterObj.scannedData["text"] }}</b>
+      </p>
+      <p>
+        Tipo : <b>{{ scannedData["format"] }}</b>
+      </p>
+    </div>
+    
+  </ion-card>
+
+  <!-- Campos -->
+
+  <ion-item>
+    <ion-label position="floating" stacked>Nombre:</ion-label>
+    <ion-input [(ngModel)] = "letterObj.nombre"></ion-input>
+  </ion-item>
+
+  <ion-item>
+    <ion-label position="floating" stacked>Telefono de contacto:</ion-label>
+    <ion-input type="number" [(ngModel)] = "letterObj.telefono"></ion-input>
+  </ion-item>
+
+  <ion-item>
+    <ion-label>Horade de atencion:</ion-label>
+    <ion-select  [(ngModel)] = "letterObj.hora_atencion1" placeholder="Selecciona una hora">
+      <ion-select-option value="1 pm">1 pm</ion-select-option>
+      <ion-select-option value="2 pm">2 pm</ion-select-option>
+      <ion-select-option value="3 pm">3 pm</ion-select-option>
+      <ion-select-option value="4 pm">4 pm</ion-select-option>
+      <ion-select-option value="5 pm">5 pm</ion-select-option>
+      <ion-select-option value="6 pm">6 pm</ion-select-option>
+      <ion-select-option value="7 pm">7 pm</ion-select-option>
+      <ion-select-option value="8 am">8 am</ion-select-option>
+      <ion-select-option value="9 am">9 am</ion-select-option>
+      <ion-select-option value="10 am">10 am</ion-select-option>
+      <ion-select-option value="11 am">11 am</ion-select-option>
+      <ion-select-option value="12 pm">12 pm</ion-select-option>
+    </ion-select>
+  </ion-item>
+
+  <ion-item>
+    <ion-label>Hasta las:</ion-label>
+    <ion-select  [(ngModel)] = "letterObj.hora_atencion2" placeholder="Selecciona una hora">
+      <ion-select-option value="1 pm">1 pm</ion-select-option>
+      <ion-select-option value="2 pm">2 pm</ion-select-option>
+      <ion-select-option value="3 pm">3 pm</ion-select-option>
+      <ion-select-option value="4 pm">4 pm</ion-select-option>
+      <ion-select-option value="5 pm">5 pm</ion-select-option>
+      <ion-select-option value="6 pm">6 pm</ion-select-option>
+      <ion-select-option value="7 am">7 am</ion-select-option>
+      <ion-select-option value="8 am">8 am</ion-select-option>
+      <ion-select-option value="9 am">9 am</ion-select-option>
+      <ion-select-option value="10 am">10 am</ion-select-option>
+      <ion-select-option value="11 am">11 am</ion-select-option>
+      <ion-select-option value="12 am">12 am</ion-select-option>
+    </ion-select>
+  </ion-item>
+
+
+  <ion-button *ngIf="dataImage" full (click)="createPdf()">Crear Reporte</ion-button>
+
+  <ion-button full (click)="downloadPdf()" color="secondary" [disabled]="!pdfObj">Enviar Reporte</ion-button>
+
+
+  <!-- <img *ngFor = "let photo of photos" [src]="letterObj.photo"> -->
+
+<ion-fab vertical="bottom" horizontal="end" slot="fixed">
+  <ion-fab-button (click)="takePicture()">
+    <ion-icon name="camera"></ion-icon>
+  </ion-fab-button>
+</ion-fab>
+
+<ion-card>
+
+  <ion-card-content>
+    <img [src]="dataImage" *ngIf="dataImage">
+  </ion-card-content>
+</ion-card>
+
+</ion-content>
