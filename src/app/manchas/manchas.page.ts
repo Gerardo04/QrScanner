@@ -44,6 +44,8 @@ export class ManchasPage implements OnInit {
 
   pdfObj = null;
 
+  codigoQR = null;
+
 
   constructor(public navCtrl: NavController,
     // public formBuilder: FormBuilder,
@@ -73,6 +75,7 @@ export class ManchasPage implements OnInit {
     .then(barcodeData  => {
       alert("Barcode data" + JSON.stringify(barcodeData));
       this.letterObj.scannedData = barcodeData;
+      this.codigoQR = barcodeData;
       console.log(numero);
     })
     .catch(err => {
@@ -141,7 +144,7 @@ export class ManchasPage implements OnInit {
   async presentLoading(){
     const loading = await this.loadingController.create({
       message: 'Creando reporte',
-      duration: 1500
+      duration: 1100
     });
     return await loading.present();
   }

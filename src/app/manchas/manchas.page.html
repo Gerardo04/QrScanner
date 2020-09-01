@@ -21,7 +21,7 @@
       <p>Recuerda que es indispensable tomar una fotografia de las manchas</p>
     </ion-card-content>
     
-    <ion-button expand="block" margin (click)="scanCode()">Comenzar escaneo</ion-button>
+    <ion-button expand="block" margin (click)="scanCode()">Escanear numero de serie</ion-button>
 
     <div *ngIf="scannedData">
       <p>
@@ -34,17 +34,17 @@
     
   </ion-card>
 
-  <ion-item>
+  <ion-item *ngIf="codigoQR"  >
     <ion-label position="floating" stacked>Nombre:</ion-label>
     <ion-input [(ngModel)] = "letterObj.nombre"></ion-input>
   </ion-item>
 
-  <ion-item>
+  <ion-item *ngIf="codigoQR"  >
     <ion-label position="floating" stacked>Telefono de contacto:</ion-label>
     <ion-input type="number" [(ngModel)] = "letterObj.telefono"></ion-input>
   </ion-item>
 
-  <ion-item>
+  <ion-item *ngIf="codigoQR"  >
     <ion-label>Horade de atencion:</ion-label>
     <ion-select  [(ngModel)] = "letterObj.hora_atencion1" placeholder="Selecciona una hora">
       <ion-select-option value="1 pm">1 pm</ion-select-option>
@@ -62,7 +62,7 @@
     </ion-select>
   </ion-item>
 
-  <ion-item>
+  <ion-item *ngIf="codigoQR"  >
     <ion-label>Hasta las:</ion-label>
     <ion-select  [(ngModel)] = "letterObj.hora_atencion2" placeholder="Selecciona una hora">
       <ion-select-option value="1 pm">1 pm</ion-select-option>
@@ -80,25 +80,28 @@
     </ion-select>
   </ion-item>
 
+  <div *ngIf="codigoQR" >
+    <ion-button *ngIf="dataImage" full (click)="createPdf()">Crear Reporte</ion-button>
 
-  <ion-button *ngIf="dataImage" full (click)="createPdf()">Crear Reporte</ion-button>
+    <ion-button full (click)="downloadPdf()" color="secondary" [disabled]="!pdfObj">Enviar Reporte</ion-button>
+  </div>
 
-  <ion-button full (click)="downloadPdf()" color="secondary" [disabled]="!pdfObj">Enviar Reporte</ion-button>
 
 
   <!-- <img *ngFor = "let photo of photos" [src]="letterObj.photo"> -->
 
-<ion-fab vertical="bottom" horizontal="end" slot="fixed">
-  <ion-fab-button (click)="takePicture()">
-    <ion-icon name="camera"></ion-icon>
-  </ion-fab-button>
-</ion-fab>
-
-<ion-card>
-
-  <ion-card-content>
-    <img [src]="dataImage" *ngIf="dataImage">
-  </ion-card-content>
-</ion-card>
+  
+    <ion-fab *ngIf="codigoQR" vertical="bottom" horizontal="end" slot="fixed">
+      <ion-fab-button (click)="takePicture()">
+        <ion-icon name="camera"></ion-icon>
+      </ion-fab-button>
+    </ion-fab>
+    
+    <ion-card>
+    
+      <ion-card-content>
+        <img [src]="dataImage" *ngIf="dataImage">
+      </ion-card-content>
+    </ion-card>
 
 </ion-content>

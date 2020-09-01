@@ -11,15 +11,18 @@
   <ion-card class="welcome-card">
     <img src="/assets/images/logo.png" alt="">
     <ion-card-header>
-      <ion-card-subtitle>Centro de ayuda</ion-card-subtitle>
-      <ion-card-title>Escaner de codigos Qr</ion-card-title>
+      <ion-card-subtitle></ion-card-subtitle>
+      <ion-card-title>Centro de soporte</ion-card-title>
     </ion-card-header>
 
     <ion-card-content>
-      <p>Aqui se podran escanear codigos Qr que se encuentran en el multifuncional</p>
+      <a href="https://www.facebook.com/SDTA.SISTEMASDIGITALES" target="_blank" >Facebook</a> <br>
+      <a href="https://sdta.mx/" target="_blank" >Pagina web</a>
+      <p>Telefonos: 44 2216 9808/44 21935 284 </p>
+
     </ion-card-content>
     
-    <ion-button expand="block" margin (click)="scanCode()">Comenzar escaneo</ion-button>
+    <ion-button expand="block" margin (click)="scanCode()">Escanear numero de serie</ion-button>
 
     <div *ngIf="scannedData">
       <p>
@@ -40,7 +43,7 @@
 
   <br>
 
-  <ion-item>
+  <ion-item *ngIf="codigoQR" >
     <ion-label position="floating">Describa la falla del equipo:</ion-label>
     <ion-input></ion-input>
     <ion-textarea  [(ngModel)]="letterObj.from" ></ion-textarea>
@@ -51,7 +54,7 @@
     <ion-input [(ngModel)] = "letterObj.from"></ion-input>
   </ion-item> -->
 
-  <ion-item>
+  <ion-item *ngIf="codigoQR"  >
     <ion-label position="floating" stacked>Nombre:</ion-label>
     <ion-input [(ngModel)] = "letterObj.nombre"></ion-input>
   </ion-item>
@@ -61,12 +64,12 @@
     <ion-input  type="email" [(ngModel)] = "letterObj.email"></ion-input>
   </ion-item> -->
 
-  <ion-item>
+  <ion-item *ngIf="codigoQR"  >
     <ion-label position="floating" stacked>Telefono de contacto:</ion-label>
     <ion-input type="number" [(ngModel)] = "letterObj.telefono"></ion-input>
   </ion-item>
 
-  <ion-item>
+  <ion-item *ngIf="codigoQR"  >
     <ion-label>Horade de atencion:</ion-label>
     <ion-select  [(ngModel)] = "letterObj.hora_atencion1" placeholder="Selecciona una hora">
       <ion-select-option value="1 pm">1 pm</ion-select-option>
@@ -84,7 +87,7 @@
     </ion-select>
   </ion-item>
 
-  <ion-item>
+  <ion-item *ngIf="codigoQR" >
     <ion-label>Hasta las:</ion-label>
     <ion-select  [(ngModel)] = "letterObj.hora_atencion2" placeholder="Selecciona una hora">
       <ion-select-option value="1 pm">1 pm</ion-select-option>
@@ -102,19 +105,15 @@
     </ion-select>
   </ion-item>
 
-  <ion-item *ngIf="scannedData">
-    <ion-label stacked>Numero de serie:</ion-label>
-    <ion-input [(ngModel)] = "letterObj.scannedData"></ion-input>
-  </ion-item>
 
-  <!-- El boton aparce siempre y cuando la variable dataImage contenga una foto -->
-  <ion-button  *ngIf="dataImage" full (click)="createPdf()" [disabled]="!letterObj.hora_atencion2">Crear Reporte</ion-button>
-
-  <!-- El boton se sigue mostrando aun y cuando el usuario decida no enviar una foto -->
-  <ion-button  *ngIf="!dataImage" full (click)="createPdfSinImagen()" [disabled]="!letterObj.hora_atencion2" >Crear Reporte</ion-button>
-
-  <ion-button full (click)="downloadPdf()" color="secondary" [disabled]="!pdfObj">Enviar Reporte</ion-button>
-
+  <div *ngIf="codigoQR" >
+    <!-- El boton aparce siempre y cuando la variable dataImage contenga una foto -->
+    <ion-button  *ngIf="dataImage" full (click)="createPdf()" [disabled]="!letterObj.hora_atencion2">Crear Reporte</ion-button>
+    <!-- El boton se sigue mostrando aun y cuando el usuario decida no enviar una foto -->
+    <ion-button  *ngIf="!dataImage" full (click)="createPdfSinImagen()" [disabled]="!letterObj.hora_atencion2" >Crear Reporte</ion-button>
+    <ion-button full (click)="downloadPdf()" color="secondary" [disabled]="!pdfObj">Enviar Reporte</ion-button>
+  </div>
+  
   <br>
 
   <br>

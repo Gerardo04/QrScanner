@@ -48,6 +48,8 @@ export class HomePage {
 
   dataImage = null;
 
+  codigoQR = null;
+
   
 
 
@@ -86,6 +88,7 @@ export class HomePage {
     .then(barcodeData  => {
       alert("Barcode data" + JSON.stringify(barcodeData));
       this.letterObj.scannedData = barcodeData;
+      this.codigoQR = barcodeData;
       console.log(numero);
     })
     .catch(err => {
@@ -197,11 +200,11 @@ createPdfSinImagen(){
       { text: 'REPORTE DE FALLAS', style: 'header' },
       { text: new Date().toTimeString(), alignment: 'right', fontSize: 14 },
 
+      { text: 'Numero de serie:', style: 'subheader' },
+      { text: this.letterObj.scannedData },
+
       { text: 'Descripcion de la falla', style: 'subheader' },
       { text: this.letterObj.from },
-
-       { text: 'Numero de serie:', style: 'subheader' },
-       { text: this.letterObj.scannedData },
 
        { text: 'Nombre', style: 'subheader', fontSize: 20, },
        { text: this.letterObj.nombre, fontSize: 15, },
@@ -254,7 +257,7 @@ createPdfSinImagen(){
 async presentLoading(){
   const loading = await this.loadingController.create({
     message: 'Creando reporte',
-    duration: 1500
+    duration: 1100
   });
   return await loading.present();
 }
